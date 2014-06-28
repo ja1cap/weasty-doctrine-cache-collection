@@ -21,7 +21,7 @@ class CacheCollection implements Collection {
     /**
      * Cache prefix of all collections instances
      */
-    const COLLECTION_CACHE_PREFIX = '_ENTITY_COLLECTION_';
+    const COLLECTION_CACHE_PREFIX = '_ENTITY_CACHE_COLLECTION_';
 
     /**
      * An array containing the entries of this collection.
