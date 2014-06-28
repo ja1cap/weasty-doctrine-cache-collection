@@ -1,0 +1,19 @@
+{
+    "name": "weasty/doctrine-cache-collection",
+    "type": "library",
+    "description": "Weasty Doctrine Cache Collection",
+    "license": "MIT",
+    "authors": [
+        {"name": "ja1cap", "email": "ja1cap@me.com"}
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "symfony/http-foundation": "2.5.*@dev",
+        "weasty/resource": "dev-master",
+        "weasty/doctrine": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Weasty\\Doctrine\\Cache\\Collection": "lib/" }
+    }
+}
