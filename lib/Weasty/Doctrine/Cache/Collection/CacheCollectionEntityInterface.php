@@ -19,11 +19,13 @@ interface CacheCollectionEntityInterface extends \ArrayAccess {
     public function getIdentifier();
 
     /**
+     * @param $collection \Weasty\Doctrine\Cache\Collection\CacheCollection
      * @return \Weasty\Doctrine\Cache\Collection\CacheCollectionElementInterface
      */
-    public function createCollectionElement();
+    public function createCollectionElement($collection);
 
     /**
+     * @deprecated
      * @return \Weasty\Doctrine\Cache\Collection\CacheCollectionElementInterface
      */
     public function getCollectionElement();

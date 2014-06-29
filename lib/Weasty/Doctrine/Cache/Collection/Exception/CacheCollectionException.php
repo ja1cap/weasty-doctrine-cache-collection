@@ -43,7 +43,7 @@ class CacheCollectionException extends Exception {
     /**
      * @return CacheCollectionException
      */
-    public static function undefinedElementKey(){
+    public static function undefinedElementIdentifier(){
         return new self('Set CacheCollectionElementInterface::$key');
     }
 

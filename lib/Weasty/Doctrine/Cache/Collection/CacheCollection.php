@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Cache\Cache;
 use Weasty\Doctrine\Entity\AbstractEntity;
 use Weasty\Doctrine\Cache\Collection\Exception\CacheCollectionException;
+use Weasty\Doctrine\EntitySerializer;
 
 /**
  * Class CacheCollection
@@ -34,6 +35,11 @@ class CacheCollection implements Collection {
      * @var \Doctrine\Common\Cache\Cache
      */
     protected $cache;
+
+    /**
+     * @var \Weasty\Doctrine\EntitySerializer
+     */
+    protected $entitySerializer;
 
     /**
      * Unique identifier field name of element
@@ -87,10 +93,11 @@ class CacheCollection implements Collection {
      */
     protected $entityManager;
 
-    function __construct(ObjectManager $entityManager, $entityClassName, $cacheLifeTime = 0)
+    function __construct(ObjectManager $entityManager, EntitySerializer $entitySerializer, Cache $cache, $entityClassName, $cacheLifeTime = 0)
     {
 
         $this->entityManager = $entityManager;
+        $this->entitySerializer = $entitySerializer;
 
         $this->entityClassName = $entityClassName;
 
@@ -156,7 +163,7 @@ class CacheCollection implements Collection {
 
         if($element instanceof CacheCollectionElementInterface){
 
-            $key = $element->getKey();
+            $key = $element->getIdentifier();
 
         } else if($element instanceof CacheCollectionEntityInterface){
 
@@ -302,13 +309,13 @@ class CacheCollection implements Collection {
     public function saveElement($element){
 
         $key = $this->getElementKey($element);
-        $cache_id = $this->getElementCacheId($key);
+        $cacheId = $this->getElementCacheId($key);
 
         if($element instanceof CacheCollectionEntityInterface){
 
-            $element = $element->createCollectionElement();
+            $element = $element->createCollectionElement($this);
             $element->setKey($key);
-            $element->setCacheId($cache_id);
+            $element->setCacheId($cacheId);
             $element->setEntityClassName($this->entityClassName);
             $element->setEntityIdentifierField($this->entityIdentifierField);
 
@@ -318,13 +325,13 @@ class CacheCollection implements Collection {
             throw CacheCollectionException::invalidEntityLazyElement();
         }
 
-        if(!$this->getCache()->contains($cache_id)){
+        if(!$this->getCache()->contains($cacheId)){
             $this->addValidKey($key);
             $this->removeInValidKey($key);
         }
 
         $this->elements[$key] = $element;
-        $this->getCache()->save($cache_id, $element, $this->cacheLifeTime);
+        $this->getCache()->save($cacheId, $element, $this->cacheLifeTime);
 
         return $element;
 
@@ -992,10 +999,12 @@ class CacheCollection implements Collection {
 
     /**
      * @param \Doctrine\Common\Cache\Cache $cache
+     * @return $this
      */
     public function setCache(Cache $cache)
     {
         $this->cache = $cache;
+        return $this;
     }
 
     /**
@@ -1022,6 +1031,14 @@ class CacheCollection implements Collection {
      */
     public function getRepository(){
         return $this->entityManager->getRepository($this->getEntityClassName());
+    }
+
+    /**
+     * @return \Weasty\Doctrine\EntitySerializer
+     */
+    public function getEntitySerializer()
+    {
+        return $this->entitySerializer;
     }
 
     /**

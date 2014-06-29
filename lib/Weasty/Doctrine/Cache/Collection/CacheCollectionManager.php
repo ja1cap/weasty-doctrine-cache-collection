@@ -3,6 +3,7 @@ namespace Weasty\Doctrine\Cache\Collection;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\ORM\EntityManager;
+use Weasty\Doctrine\EntitySerializer;
 
 /**
  * Class CacheCollectionManager
@@ -13,39 +14,50 @@ class CacheCollectionManager {
     /**
      * @var array
      */
-    protected $collections = array();
+    protected static $collections = array();
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $entityManager;
+    protected static $entityManager;
+
+    /**
+     * @var \Weasty\Doctrine\EntitySerializer
+     */
+    protected static $entitySerializer;
 
     /**
      * @var \Doctrine\Common\Cache\Cache
      */
-    protected $cache;
+    protected static $cache;
 
-    function __construct(EntityManager $entityManager, Cache $cache)
+    function __construct(EntityManager $entityManager, EntitySerializer $entitySerializer, Cache $cache)
     {
-        $this->entityManager = $entityManager;
-        $this->cache = $cache;
+        self::$entityManager = $entityManager;
+        self::$entitySerializer = $entitySerializer;
+        self::$cache = $cache;
     }
 
     /**
      * @param $entityClassName
      * @return CacheCollection
      */
-    public function getCollection($entityClassName){
+    public static function getCollection($entityClassName){
 
-        if(!isset($this->collections[$entityClassName])){
+        if(!isset(static::$collections[$entityClassName])){
 
-            $collection = new CacheCollection($this->entityManager, $entityClassName);
-            $collection->setCache($this->cache);
-            $this->collections[$entityClassName] = $collection;
+            $collection = new CacheCollection(
+                static::$entityManager,
+                static::$entitySerializer,
+                static::$cache,
+                $entityClassName
+            );
+
+            static::$collections[$entityClassName] = $collection;
 
         }
 
-        return $this->collections[$entityClassName];
+        return static::$collections[$entityClassName];
 
     }
 

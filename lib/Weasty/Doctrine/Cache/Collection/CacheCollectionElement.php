@@ -50,14 +50,15 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     private $collection;
 
-    function __construct(EntityInterface $entity)
+    function __construct(CacheCollection $collection, EntityInterface $entity)
     {
 
         $this->entity = $entity;
+        $this->collection = $collection;
 
         $this->__string = (string)$entity;
 
-        $data = $entity->toArray();
+        $data = $collection->getEntitySerializer()->toArray($entity);
         $this->setData($data);
 
     }
@@ -73,7 +74,7 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     /**
      * @return string|int
      */
-    public function getKey()
+    public function getIdentifier()
     {
         return $this->key ?: $this->getEntity()->getIdentifier();
     }
@@ -119,8 +120,8 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
 
         if(!$this->entity){
 
-            if(!$this->getKey()){
-                throw CacheCollectionException::undefinedElementKey();
+            if(!$this->getIdentifier()){
+                throw CacheCollectionException::undefinedElementIdentifier();
             }
 
             if(!$this->getEntityIdentifierField()){
@@ -128,7 +129,7 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
             }
 
             $this->entity = $this->getRepository()->findOneBy(array(
-                $this->getEntityIdentifierField() => $this->getKey(),
+                $this->getEntityIdentifierField() => $this->getIdentifier(),
             ));
 
             if(!$this->entity){
@@ -142,11 +143,11 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     }
 
     /**
-     * @param string $entity_identifier_field
+     * @param string $entityIdentifierField
      */
-    public function setEntityIdentifierField($entity_identifier_field)
+    public function setEntityIdentifierField($entityIdentifierField)
     {
-        $this->entityIdentifierField = $entity_identifier_field;
+        $this->entityIdentifierField = $entityIdentifierField;
     }
 
     /**
@@ -293,21 +294,12 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     }
 
     /**
-     * @param \Weasty\Doctrine\Cache\Collection\CacheCollection $collection
-     * @return $this
-     */
-    public function setCollection(CacheCollection $collection){
-        $this->collection = $collection;
-        return $this;
-    }
-
-    /**
      * @return \Weasty\Doctrine\Cache\Collection\CacheCollection
      * @throws \Weasty\Doctrine\Cache\Collection\Exception\CacheCollectionException
      */
-    public function getCollection(){
+    protected function getCollection(){
         if(!$this->collection){
-            throw new CacheCollectionException('CacheCollectionElement::$collection not defined');
+            $this->collection = CacheCollectionManager::getCollection($this->getEntityClassName());
         }
         return $this->collection;
     }

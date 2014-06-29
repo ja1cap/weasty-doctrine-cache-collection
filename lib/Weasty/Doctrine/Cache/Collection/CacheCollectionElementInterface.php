@@ -4,22 +4,9 @@ namespace Weasty\Doctrine\Cache\Collection;
 
 /**
  * Interface CacheCollectionElementInterface
- * @package Weasty\Bundle\DoctrineCacheBundle\Collection\Entities
+ * @package Weasty\Doctrine\Cache\Collection
  */
 interface CacheCollectionElementInterface extends \ArrayAccess, \JsonSerializable {
-
-    /**
-     * @param \Weasty\Doctrine\Cache\Collection\CacheCollection $collection
-     * @return $this
-     */
-    public function setCollection(CacheCollection $collection);
-
-    /**
-     * @return \Weasty\Doctrine\Cache\Collection\CacheCollection
-     * @throws \Weasty\Doctrine\Cache\Collection\Exception\CacheCollectionException
-     */
-    public function getCollection();
-
 
     /**
      * @param string|int $cache_id
@@ -39,7 +26,7 @@ interface CacheCollectionElementInterface extends \ArrayAccess, \JsonSerializabl
     /**
      * @return string|int
      */
-    public function getKey();
+    public function getIdentifier();
 
     /**
      * @return \Weasty\Doctrine\Entity\AbstractEntity
@@ -47,9 +34,9 @@ interface CacheCollectionElementInterface extends \ArrayAccess, \JsonSerializabl
     public function getEntity();
 
     /**
-     * @param string $entity_identifier_field
+     * @param string $entityIdentifierField
      */
-    public function setEntityIdentifierField($entity_identifier_field);
+    public function setEntityIdentifierField($entityIdentifierField);
 
     /**
      * @return string
@@ -57,9 +44,9 @@ interface CacheCollectionElementInterface extends \ArrayAccess, \JsonSerializabl
     public function getEntityIdentifierField();
 
     /**
-     * @param string $entity_name
+     * @param string $entityName
      */
-    public function setEntityClassName($entity_name);
+    public function setEntityClassName($entityName);
 
     /**
      * @return string
