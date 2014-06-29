@@ -24,10 +24,4 @@ interface CacheCollectionEntityInterface extends \ArrayAccess {
      */
     public function createCollectionElement($collection);
 
-    /**
-     * @deprecated
-     * @return \Weasty\Doctrine\Cache\Collection\CacheCollectionElementInterface
-     */
-    public function getCollectionElement();
-
 } 
