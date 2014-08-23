@@ -58,7 +58,8 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
 
         $this->__string = (string)$entity;
 
-        $this->buildData($collection, $entity);
+        $data = $this->buildData($collection, $entity);
+        $this->setData($data);
 
     }
 
@@ -97,11 +98,10 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     /**
      * @param CacheCollection $collection
      * @param EntityInterface $entity
-     * @return $this
+     * @return array
      */
     protected function buildData(CacheCollection $collection, EntityInterface $entity){
-        $data = $collection->getEntitySerializer()->toArray($entity);
-        return $this->setData($data);
+        return $collection->getEntitySerializer()->toArray($entity);
     }
 
     /**
