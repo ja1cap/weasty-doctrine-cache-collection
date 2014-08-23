@@ -199,7 +199,8 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     public function offsetExists($offset)
     {
 
-        $method = 'get' . str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'get' . $camelCaseOffset;
         if(method_exists($this, $method)){
             return true;
         }
@@ -220,17 +221,18 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     public function offsetGet($offset)
     {
 
-        $method = 'get' . str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'get' . $camelCaseOffset;
 
         if(method_exists($this, $method)){
             return $this->$method();
         }
 
-        if(!isset($this->data[$offset])){
+        if(!isset($this->data[$camelCaseOffset])){
             return null;
         }
 
-        return $this->data[$offset];
+        return $this->data[$camelCaseOffset];
 
     }
 
@@ -248,11 +250,12 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     public function offsetSet($offset, $value)
     {
-        $method = 'set' . str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'set' . $camelCaseOffset;
         if(method_exists($this, $method)){
             $this->$method($value);
         }
-        $this->data[$offset] = $value;
+        $this->data[$camelCaseOffset] = $value;
     }
 
     /**
@@ -266,13 +269,14 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     public function offsetUnset($offset)
     {
-        $method = 'set' . str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'set' . $camelCaseOffset;
         if(method_exists($this, $method)){
             $this->$method(null);
         }
 
-        if(isset($this->data[$offset])){
-            unset($this->data[$offset]);
+        if(isset($this->data[$camelCaseOffset])){
+            unset($this->data[$camelCaseOffset]);
         }
     }
 
@@ -335,7 +339,7 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     public function translate()
     {
-        throw new \Exception('CacheCollectionElement::getDoctrine() is deprecated');
+        throw new \Exception('CacheCollectionElement::translate() is deprecated');
     }
 
     /**
