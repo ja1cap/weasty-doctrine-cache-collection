@@ -354,12 +354,12 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     function __sleep()
     {
-        $names = array();
         $vars = get_object_vars($this);
-        foreach($vars as $name => $value){
-            $names[] = $name;
-        }
-        return $names;
+
+        unset($vars['entity']);
+        unset($vars['collection']);
+
+        return array_keys($vars);
     }
 
     /**
