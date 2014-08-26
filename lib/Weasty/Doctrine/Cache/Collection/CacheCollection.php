@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Cache\Cache;
 use Weasty\Doctrine\Entity\AbstractEntity;
 use Weasty\Doctrine\Cache\Collection\Exception\CacheCollectionException;
+use Weasty\Doctrine\Entity\EntityInterface;
 use Weasty\Doctrine\EntitySerializer;
 
 /**
@@ -322,6 +323,14 @@ class CacheCollection implements Collection {
         if($element instanceof CacheCollectionEntityInterface){
 
             $element = $element->createCollectionElement($this);
+            $element->setKey($key);
+            $element->setCacheId($cacheId);
+            $element->setEntityClassName($this->entityClassName);
+            $element->setEntityIdentifierField($this->entityIdentifierField);
+
+        } elseif($element instanceof EntityInterface){
+
+            $element = new CacheCollectionElement($this, $element);
             $element->setKey($key);
             $element->setCacheId($cacheId);
             $element->setEntityClassName($this->entityClassName);
