@@ -104,6 +104,7 @@ class CacheCollection implements Collection {
         $metadata = $this->entityManager->getClassMetadata($entityClassName);
         $this->entityIdentifierField = current($metadata->getIdentifier());
 
+        $this->cache = $cache;
         $this->cacheLifeTime = $cacheLifeTime;
 
         $baseCachePrefix = self::COLLECTION_CACHE_PREFIX . $entityClassName;
