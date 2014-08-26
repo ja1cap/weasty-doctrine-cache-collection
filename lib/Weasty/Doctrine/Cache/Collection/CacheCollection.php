@@ -1050,6 +1050,14 @@ class CacheCollection implements Collection {
     }
 
     /**
+     * @return CacheCollectionManager
+     */
+    public function getCollectionManager()
+    {
+        return $this->collectionManager;
+    }
+
+    /**
      * @deprecated
      * @throws \Exception
      */
