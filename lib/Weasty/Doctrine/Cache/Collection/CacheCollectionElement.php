@@ -199,8 +199,8 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     public function offsetExists($offset)
     {
 
-        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
-        $method = 'get' . $camelCaseOffset;
+        $classifiedOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'get' . $classifiedOffset;
         if(method_exists($this, $method)){
             return true;
         }
@@ -221,18 +221,18 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
     public function offsetGet($offset)
     {
 
-        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
-        $method = 'get' . $camelCaseOffset;
+        $classifiedOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'get' . $classifiedOffset;
 
         if(method_exists($this, $method)){
             return $this->$method();
         }
 
-        if(!isset($this->data[$camelCaseOffset])){
+        if(!isset($this->data[$offset])){
             return null;
         }
 
-        return $this->data[$camelCaseOffset];
+        return $this->data[$offset];
 
     }
 
@@ -250,12 +250,12 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     public function offsetSet($offset, $value)
     {
-        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
-        $method = 'set' . $camelCaseOffset;
+        $classifiedOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'set' . $classifiedOffset;
         if(method_exists($this, $method)){
             $this->$method($value);
         }
-        $this->data[$camelCaseOffset] = $value;
+        $this->data[$offset] = $value;
     }
 
     /**
@@ -269,14 +269,14 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     public function offsetUnset($offset)
     {
-        $camelCaseOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
-        $method = 'set' . $camelCaseOffset;
+        $classifiedOffset = str_replace(" ", "", ucwords(strtr($offset, "_-", "  ")));
+        $method = 'set' . $classifiedOffset;
         if(method_exists($this, $method)){
             $this->$method(null);
         }
 
-        if(isset($this->data[$camelCaseOffset])){
-            unset($this->data[$camelCaseOffset]);
+        if(isset($this->data[$offset])){
+            unset($this->data[$offset]);
         }
     }
 
