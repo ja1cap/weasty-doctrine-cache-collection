@@ -313,9 +313,16 @@ class CacheCollectionElement implements CacheCollectionElementInterface {
      */
     protected function getCollection(){
         if(!$this->collection){
-            $this->collection = CacheCollectionManager::getCollection($this->getEntityClassName());
+            $this->collection = $this->getCollectionManager()->getCollection($this->getEntityClassName());
         }
         return $this->collection;
+    }
+
+    /**
+     * @return CacheCollectionManager
+     */
+    protected function getCollectionManager(){
+        return CacheCollectionManager::getInstance();
     }
 
     /**

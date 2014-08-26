@@ -89,12 +89,19 @@ class CacheCollection implements Collection {
     protected $invalidKeysCacheId;
 
     /**
+     * @var CacheCollectionManager
+     */
+    protected $collectionManager;
+
+    /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $entityManager;
 
-    function __construct(ObjectManager $entityManager, EntitySerializer $entitySerializer, Cache $cache, $entityClassName, $cacheLifeTime = 0)
+    function __construct(CacheCollectionManager $collectionManager, ObjectManager $entityManager, EntitySerializer $entitySerializer, Cache $cache, $entityClassName, $cacheLifeTime = 0)
     {
+
+        $this->collectionManager = $collectionManager;
 
         $this->entityManager = $entityManager;
         $this->entitySerializer = $entitySerializer;

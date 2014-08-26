@@ -14,50 +14,72 @@ class CacheCollectionManager {
     /**
      * @var array
      */
-    protected static $collections = array();
+    protected $collections = array();
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected static $entityManager;
+    protected $entityManager;
 
     /**
      * @var \Weasty\Doctrine\EntitySerializer
      */
-    protected static $entitySerializer;
+    protected $entitySerializer;
 
     /**
      * @var \Doctrine\Common\Cache\Cache
      */
-    protected static $cache;
+    protected $cache;
 
+    private static $instance;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param EntitySerializer $entitySerializer
+     * @param Cache $cache
+     */
     function __construct(EntityManager $entityManager, EntitySerializer $entitySerializer, Cache $cache)
     {
-        self::$entityManager = $entityManager;
-        self::$entitySerializer = $entitySerializer;
-        self::$cache = $cache;
+
+        $this->entityManager = $entityManager;
+        $this->entitySerializer = $entitySerializer;
+        $this->cache = $cache;
+
+        self::$instance = $this;
+
+    }
+
+    /**
+     * @return CacheCollectionManager
+     */
+    public static function getInstance(){
+        if(!self::$instance){
+            //@TODO throw exception
+        }
+        return self::$instance;
     }
 
     /**
      * @param $entityClassName
      * @return CacheCollection
      */
-    public static function getCollection($entityClassName){
+    public function getCollection($entityClassName){
 
-        if(!isset(static::$collections[$entityClassName])){
+        if(!isset($this->collections[$entityClassName])){
 
             $collection = new CacheCollection(
-                static::$entityManager,
-                static::$entitySerializer,
-                static::$cache,
+                $this,
+                $this->entityManager,
+                $this->entitySerializer,
+                $this->cache,
                 $entityClassName
             );
 
-            static::$collections[$entityClassName] = $collection;
+            $this->collections[$entityClassName] = $collection;
 
         }
 
-        return static::$collections[$entityClassName];
+        return $this->collections[$entityClassName];
 
     }
 
