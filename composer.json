@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.3.2",
         "doctrine/orm": "~2.2,>=2.2.3",
-        "symfony/http-foundation": "2.5.*@dev",
+        "symfony/http-foundation": ">=2.5",
         "weasty/resource": "dev-master",
         "weasty/doctrine": "dev-master"
     },
