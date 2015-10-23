@@ -67,12 +67,14 @@ class CacheCollectionManager {
 
         if(!isset($this->collections[$entityClassName])){
 
+            //@TODO change cache time
             $collection = new CacheCollection(
                 $this,
                 $this->entityManager,
                 $this->entitySerializer,
                 $this->cache,
-                $entityClassName
+                $entityClassName,
+                30
             );
 
             $this->collections[$entityClassName] = $collection;
