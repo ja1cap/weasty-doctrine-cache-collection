@@ -10,8 +10,8 @@
         "php": ">=5.3.2",
         "doctrine/orm": "~2.2,>=2.2.3",
         "symfony/http-foundation": ">=2.5",
-        "weasty/resource": "dev-master",
-        "weasty/doctrine": "dev-master"
+        "weasty/resource": ">=v1.0",
+        "weasty/doctrine": ">=v1.0"
     },
     "autoload": {
         "psr-0": { "Weasty\\Doctrine\\Cache\\Collection": "lib/" }
